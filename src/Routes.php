@@ -13,7 +13,7 @@ class Routes
     {
         $anonymous = new Anonymous();
 
-        $anonymous->request = static function () {
+        $anonymous->create = static function () {
             return Client::VERSION_API . 'payments';
         };
 
@@ -39,7 +39,7 @@ class Routes
     {
         $anonymous = new Anonymous();
 
-        $anonymous->token = static function () {
+        $anonymous->tokens = static function () {
             return Client::VERSION_API . 'tokens/cards';
         };
 

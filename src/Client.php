@@ -3,6 +3,8 @@
 namespace Adiq;
 
 use Adiq\Endpoints\Auth;
+use Adiq\Endpoints\Card;
+use Adiq\Endpoints\Marketplace;
 use Adiq\Endpoints\Payment;
 use Adiq\RequestHandler;
 use Adiq\Endpoints\Ride;
@@ -50,6 +52,31 @@ class Client
      * @var \Adiq\Endpoints\Auth
      */
     private $auth;
+    
+    /**
+     * @var string
+     */
+    private $accessToken;
+    
+    /**
+     * @var string
+     */
+    private $tokenType;
+    
+    /**
+     * @var string
+     */
+    private $expiresIn;
+    
+    /**
+     * @var string
+     */
+    private $scope;
+    
+    /**
+     * @var bool
+     */
+    private $sandbox = false;
 
     /**
      * @param string $apiKey
@@ -63,6 +90,8 @@ class Client
         } else {
             $base_url = self::BASE_URI;
         }
+
+        $this->sandbox = $sandbox;
 
         $options = ['base_uri' => $base_url];
 
@@ -82,6 +111,8 @@ class Client
         $this->http = new HttpClient($options);
 
         $this->payment = new Payment($this);
+        $this->card = new Card($this);
+        $this->marketplace = new Marketplace($this);
         $this->auth = new Auth($this);
     }
 
@@ -95,16 +126,46 @@ class Client
      *
      * @psalm-suppress InvalidNullableReturnType
      */
-    public function request($method, $uri, $options = [])
+    public function request($method, $uri, $options = [], $header = [])
     {
         try {
+
+            $userAgent = isset($header['headers']['User-Agent']) ?
+                $header['headers']['User-Agent'] :
+                '';
+            if(isset($header) && !empty($header)) {
+                if($this->sandbox) {
+                    $base_url = self::BASE_URI_SANDBOX;
+                } else {
+                    $base_url = self::BASE_URI;
+                }
+        
+                $options = array_merge($options, ['base_uri' => $base_url]);
+
+                $authorization = isset($header['Authorization']) ?
+                    $header['Authorization'] :
+                    '';
+
+                $options['headers'] = $this->addUserAgentHeaders($userAgent, $authorization);
+
+                $this->http = new HttpClient($options);
+            }
+            
             $response = $this->http->request(
                 $method,
                 $uri,
                 $options
             );
 
-            return ResponseHandler::success((string)$response->getBody());
+            $body = ResponseHandler::success((string)$response->getBody());
+            if(isset($body->accessToken) && !empty($body->accessToken)) {
+                $this->accessToken = $body->accessToken;
+                $this->tokenType = $body->tokenType;
+                $this->expiresIn = $body->expiresIn;
+                $this->scope = $body->scope;
+            }
+
+            return $body;
         } catch (InvalidJsonException $exception) {
             throw $exception;
         } catch (ClientException $exception) {
@@ -140,6 +201,7 @@ class Client
     {
         return [
             'User-Agent' => $this->buildUserAgent($customUserAgent),
+            'Content-Type' => "application/json",
             'Authorization' => $authorization,
             self::DELIVERY_USER_AGENT_HEADER => $this->buildUserAgent(
                 $customUserAgent
@@ -177,5 +239,37 @@ class Client
     public function auth()
     {
         return $this->auth;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getAccessToken()
+    {
+        return $this->accessToken;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getTokenType()
+    {
+        return $this->tokenType;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getExpiresIn()
+    {
+        return $this->expiresIn;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->scope;
     }
 }

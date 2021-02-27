@@ -18,7 +18,14 @@ class Marketplace extends Endpoint
         return $this->client->request(
             self::GET,
             Routes::marketplace()->unlock($payload['id']),
-            ['json' => $payload]
+            ['json' => $payload],
+            [
+                'Content-Type' => "application/json",
+                'Authorization' => 
+                    $this->client->getTokenType() . 
+                    ' ' . 
+                    $this->client->getAccessToken()
+            ]
         );
     }
     /**
@@ -31,7 +38,14 @@ class Marketplace extends Endpoint
         return $this->client->request(
             self::PUT,
             Routes::marketplace()->unlock($payload['id']),
-            ['json' => $payload]
+            ['json' => $payload],
+            [
+                'Content-Type' => "application/json",
+                'Authorization' => 
+                    $this->client->getTokenType() . 
+                    ' ' . 
+                    $this->client->getAccessToken()
+            ]
         );
     }
 }

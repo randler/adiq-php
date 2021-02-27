@@ -2,7 +2,6 @@
 
 namespace Adiq\Endpoints;
 
-use Adiq\Client;
 use Adiq\Routes;
 use Adiq\Endpoints\Endpoint;
 
@@ -18,8 +17,15 @@ class Card extends Endpoint
     {
         return $this->client->request(
             self::POST,
-            Routes::card()->token(),
-            ['json' => $payload]
+            Routes::card()->tokens(),
+            ['json' => $payload],
+            [
+                'Content-Type' => "application/json",
+                'Authorization' => 
+                    $this->client->getTokenType() . 
+                    ' ' . 
+                    $this->client->getAccessToken()
+            ]
         );
     }
 
@@ -33,7 +39,14 @@ class Card extends Endpoint
         return $this->client->request(
             self::POST,
             Routes::card()->vaults(),
-            ['json' => $payload]
+            ['json' => $payload],
+            [
+                'Content-Type' => "application/json",
+                'Authorization' => 
+                    $this->client->getTokenType() . 
+                    ' ' . 
+                    $this->client->getAccessToken()
+            ]
         );
     }
 }

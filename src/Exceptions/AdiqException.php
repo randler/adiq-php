@@ -20,14 +20,38 @@ final class AdiqException extends \Exception
     private $description;
 
     /**
+     * @var string
+     */
+    private $type;
+    
+    /**
+     * @var string
+     */
+    private $title;
+    
+    /**
+     * @var string
+     */
+    private $traceId;
+
+    /**
      * @param boolean $tag
      * @param int $description
      */
-    public function __construct($status, $tag, $description)
+    public function __construct(
+        $status, 
+        $tag, 
+        $description, 
+        $type = "",
+        $title = "",
+        $traceId = "")
     {
         $this->status = $status;
         $this->tag = $tag;
         $this->description = $description;
+        $this->type = $type;
+        $this->title = $title;
+        $this->traceId = $traceId;
 
         $exceptionMessage = $this->buildExceptionMessage();
 
@@ -42,7 +66,10 @@ final class AdiqException extends \Exception
         return sprintf(
             $this->description,
             $this->code,
-            $this->tag
+            $this->tag,
+            $this->type,
+            $this->title,
+            $this->traceId
         );
     }
 
@@ -68,5 +95,35 @@ final class AdiqException extends \Exception
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Get the value of type
+     *
+     * @return  string
+     */ 
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Get the value of title
+     *
+     * @return  string
+     */ 
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Get the value of traceId
+     *
+     * @return  string
+     */ 
+    public function getTraceId()
+    {
+        return $this->traceId;
     }
 }

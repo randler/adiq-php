@@ -43,9 +43,11 @@ class ResponseHandler
             return $guzzleException;
         }
 
+        
+
         $body = $response->getBody()->getContents();
         $status = $response->getStatusCode();
-
+        fwrite(STDERR, print_r($body));
 
         try {
             $jsonError = self::toJson($body);
@@ -53,17 +55,47 @@ class ResponseHandler
             return $guzzleException;
         }
 
-        $tag = isset($jsonError[0]->Tag) ? 
-            $jsonError[0]->Tag : 
-            $jsonError[0]->tag;
-        $description = isset($jsonError[0]->Description) ? 
-            $jsonError[0]->Description : 
-            $jsonError[0]->description;
+        $tag = "";
+        if(is_array($jsonError) && (
+            isset($jsonError[0]->Tag) || 
+            isset($jsonError[0]->tag) )
+        ) {
+            $tag = isset($jsonError[0]->Tag) ? 
+                $jsonError[0]->Tag : 
+                $jsonError[0]->tag;
+        }
+
+        $description = "";
+        if(is_array($jsonError) && (
+            isset($jsonError[0]->Description) || 
+            isset($jsonError[0]->description) )
+        ) {
+            $description = isset($jsonError[0]->Description) ? 
+                $jsonError[0]->Description : 
+                $jsonError[0]->description;
+        }
+
+        $type = "";
+        if(is_object($jsonError) && isset($jsonError->type)) {
+            $type = $jsonError->type;
+        }
+        
+        $title = "";
+        if(is_object($jsonError) && isset($jsonError->title)) {
+            $title = $jsonError->title;
+        }
+        $traceId = "";
+        if(is_object($jsonError) && isset($jsonError->traceId)) {
+            $traceId = $jsonError->traceId;
+        }
                 
         return new AdiqException(
             $status,
             $tag,
-            $description
+            $description,
+            $type,
+            $title,
+            $traceId
         );
     }
 
