@@ -160,3 +160,31 @@ Apos obter o numberToken do cartão, na requisição anterior, é possivel agora
   $response = $client->card()->vaults($data_card);
 ?>
 ```
+
+## Requisição de transação
+### Create
+[Funcionando - documentando]
+<br>
+
+### Detail
+[Em Teste - a documentar]
+<br>
+
+### Cancel
+[Em Teste - a documentar]
+<br>
+
+### Capture
+[Em Teste - a documentar]
+<br>
+
+## Requisição de Marketplace
+
+
+### Unlock
+[Em Teste - a documentar]
+<br>
+
+### Update
+[Em Teste - a documentar]
+<br>
