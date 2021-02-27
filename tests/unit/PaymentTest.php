@@ -4,7 +4,7 @@ namespace Adiq\Test;
 require_once ('vendor/autoload.php');
 
 /** Testes
- * ./vendor/bin/phpunit --bootstrap vendor/autoload.php tests/unit/ClientTest.php 
+ * ./vendor/bin/phpunit --bootstrap vendor/autoload.php tests/unit/PaymentTest.php
  */
 
 use Adiq\Beans\CustomerCard;
@@ -109,8 +109,6 @@ class ClientTest extends TestCase
             'sellerInfo' => $sellerInfo->getSellerInfoData(),
             'sellers' => $sellers->getSellersData()
         ];
-
-        fwrite(STDERR, print_r(json_encode($data_request)));
 
         //fwrite(STDERR, print_r($client->getAccessToken()));
         $response = $client->payment()->create($data_request);

@@ -4,7 +4,7 @@ namespace Adiq\Test;
 require_once ('vendor/autoload.php');
 
 /** Testes
- * ./vendor/bin/phpunit --bootstrap vendor/autoload.php tests/unit/ClientTest.php 
+ * ./vendor/bin/phpunit --bootstrap vendor/autoload.php tests/unit/CardTokenTest.php
  */
 
 use Adiq\Beans\CustomerCard;
