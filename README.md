@@ -42,8 +42,6 @@ Você pode acessar a documentação oficial da API acessando esse [link](https:/
 - [Requisição de Tokenização](#requisição-de-tokenização)
   - [Token de Cartão](#token-de-cartão)
   - [Cofre de Cartão](#cofre-de-cartão)
-- [Requisição de store](#requisição-de-store)
-  - [Criando uma nova store](#criando-uma-nova-store)
 <br>
 <br>
 
