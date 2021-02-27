@@ -52,13 +52,13 @@ class ClientTest extends TestCase
             ->setExpirationYear("19");
         
         $sellerInfo = new SellerInfo();
-        $sellerInfo->setOrderNumber("0000000001")
-            ->setSoftDescriptor("PAG*TESTE")
+        $sellerInfo->setOrderNumber("00100000001");
+            /*->setSoftDescriptor("PAG*TESTE")
             ->setDynamicMcc("9999")
             ->setCavvUcaf("commerceauth")
             ->setEci("05")
             ->setXid("commerc")
-            ->setProgramProtocol("2.0.1");
+            ->setProgramProtocol("2.0.1");*/
 
 
         // Items de Sellers
@@ -107,7 +107,7 @@ class ClientTest extends TestCase
             'payment' => $payment->getPaymentData(),
             'cardInfo' => $cardInfo->getCardData(),
             'sellerInfo' => $sellerInfo->getSellerInfoData(),
-            'sellers' => $sellers->getSellersData()
+            //'sellers' => $sellers->getSellersData()
         ];
 
         //fwrite(STDERR, print_r($client->getAccessToken()));

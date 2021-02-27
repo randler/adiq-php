@@ -31,4 +31,134 @@ Essa SDK foi construída com o intuito de tornar flexível as chamadas dos metod
 
 Você pode acessar a documentação oficial da API acessando esse [link](https://developers.adiq.io/manual/ecommerce#vis%C3%A3o-geral-adiq-e-commerce).
 
-[Em Construção]
+
+## Índice
+
+- [Instalação](#instalação)
+- [Configuração](#configuração)
+  - [Definindo headers customizados](#definindo-headers-customizados)
+- [Requisição de Autenticação](#requisição-de-autenticação)
+  - [Solicitando Access Token](#solicitando-access-token)
+- [Requisição de Tokenização](#requisição-de-tokenização)
+  - [Token de Cartão](#token-de-cartão)
+  - [Cofre de Cartão](#cofre-de-cartão)
+- [Requisição de store](#requisição-de-store)
+  - [Criando uma nova store](#criando-uma-nova-store)
+<br>
+<br>
+
+
+## Instalação
+
+Instale a biblioteca utilizando o comando
+
+`composer require randler/adiq-php`
+<br>
+<br>
+
+
+## Configuração
+
+Para incluir a biblioteca em seu projeto, basta fazer o seguinte:
+
+```php
+<?php
+require('vendor/autoload.php');
+
+$adiq = new Adiq\Client();
+```
+
+### Definindo headers customizados
+
+1. Se necessário for é possível definir headers http customizados para os requests. Para isso basta informá-los durante a instanciação do objeto `Client`:
+
+```php
+<?php
+require('vendor/autoload.php');
+
+$key = new Key();
+$key->setClientId("<CLIENT_ID>");
+$key->setClientSecret("<CLIENT_SECRET>");
+
+$sandbox = true;
+
+$adiq = new Adiq\Client(
+    ['Authorization' => $key->getKeyBase64()],
+    $sandbox
+); 
+```
+
+E então, você pode poderá utilizar o cliente para fazer requisições, como nos exemplos abaixo.
+<br>
+<br>
+
+## Requisição de Autenticação
+
+Nesta seção será explicado como realizar requisições autorização no Adiq.
+<br>
+
+### Solicitando Access Token
+
+```php
+<?php
+
+  $optionRequestAuth = [
+      "grantType" => "client_credentials",
+  ];
+  
+  $sandbox = true;
+
+  $key = new Key();
+  $key->setClientId("<CLIENT_ID>");
+  $key->setClientSecret("<CLIENT_SECRET>");
+  
+  $client = new Client(
+    ['Authorization' => $key->getKeyBase64()], 
+    $sandbox
+  );
+  
+  $client->auth()->token($optionRequestAuth);
+```
+
+Caso as chaves estajam corretas os dados de acesso serão armazenado no objeto `$client` e podem ser visualizados com seus metodos get especificos. esse objeto pode ser usado para a requisição sem a necessidade de salvar o token, ou reenvia-lo ou remontar o header novamente.
+
+## Requisição de Tokenização
+
+Nesta seção será explicado como realizar requisições para cartão pelok Adiq com essa biblioteca.
+<br>
+
+### Token de Cartão
+
+```php
+<?php
+ $cardInfo = new CustomerCard();
+  $cardInfo->setCardNumber("5201561050025011");
+
+  $data_card = $cardInfo->getCardNumberData();
+
+  $response = $client->card()->create($data_card);
+?>
+```
+<br>
+
+### Cofre de Cartão
+
+Apos obter o numberToken do cartão, na requisição anterior, é possivel agora armazenar os dados do cartão. 
+
+```php
+<?php
+ $numberToken = $response->numberToken;
+
+  $cardInfo->setNumberToken($numberToken)
+      ->setBrand("visa")
+      ->setCardholderName("JOSE SILVA")
+      ->setExpirationMonth("01")
+      ->setExpirationYear("19")
+      ->setVerifyCard(true)
+      ->setSecurityCode("123");
+
+  $data_card = $cardInfo->getCardData();
+  
+  $response = $client->card()->vaults($data_card);
+?>
+```
