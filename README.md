@@ -21,7 +21,7 @@
     <img src="https://img.shields.io/badge/vers%C3%A3o-0.0.1--beta-green" alt="Versão" />
   </a>
   <a href="https://github.com/randler/adiq-php/releases">
-    <img src="https://img.shields.io/packagist/dt/codificar/delivery-api-php.svg" alt="Downloads" />
+    <img src="https://img.shields.io/packagist/dt/randler/adiq-php.svg" alt="Downloads" />
   </a>
 </p>
 
