@@ -56,9 +56,9 @@ class Client
      * @param array|null $extras
      * @param boolean|false $test
      */
-    public function __construct($sandbox = false, array $extras = null)
+    public function __construct(array $extras = null, bool $sandbox = false)
     {
-        if(empty($sandbox) || !$sandbox) {
+        if($sandbox) {
             $base_url = self::BASE_URI_SANDBOX;
         } else {
             $base_url = self::BASE_URI;

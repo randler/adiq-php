@@ -8,6 +8,7 @@ require_once ('vendor/autoload.php');
  */
 
 use Adiq\Client;
+use Adiq\Key;
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase
@@ -79,12 +80,15 @@ class ClientTest extends TestCase
 
     public function testRequestAuth()
     {
-        $credential = "Basic " . base64_encode("A1EF2F6F-8BA0-4C2F-91EA-8E1603D9FD7D:93D46FF3-B98C-4BFF-92CD-3A3A58BDD371");
         $optionRequestAuth = [
             "grantType" => "client_credentials",
         ];
         
-        $client = new Client(true, ['Authorization' => $credential]);
+        $key = new Key();
+        $key->setClientId("A1EF2F6F-8BA0-4C2F-91EA-8E1603D9FD7D");
+        $key->setClientSecret("93D46FF3-B98C-4BFF-92CD-3A3A58BDD371");
+        
+        $client = new Client(['Authorization' => $key->getKeyBase64()], true);
         
         //fwrite(STDERR, print_r($client));
         
