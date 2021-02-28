@@ -33,13 +33,15 @@ class ClientTest extends TestCase
         // Requisição de token funcionando
         $client->auth()->token($optionRequestAuth);
 
+        //fwrite(STDERR, print_r(json_encode($client->getAccessToken())));
+
         $payment = new PaymentData();
         $payment->setTransactionType("credit")
                 ->setAmount(1035)
                 ->setCurrencyCode("brl")
                 ->setProductType("avista")
                 ->setInstallments(1)
-                ->setCaptureType("ac")
+                ->setCaptureType("pa")
                 ->setRecurrent(false);
 
         $cardInfo = new CustomerCard();
@@ -52,7 +54,7 @@ class ClientTest extends TestCase
             ->setExpirationYear("19");
         
         $sellerInfo = new SellerInfo();
-        $sellerInfo->setOrderNumber("00100000001");
+        $sellerInfo->setOrderNumber("101000000020");
             /*->setSoftDescriptor("PAG*TESTE")
             ->setDynamicMcc("9999")
             ->setCavvUcaf("commerceauth")
@@ -103,17 +105,56 @@ class ClientTest extends TestCase
         $sellers->addSellers($sellers1);
         $sellers->addSellers($sellers2);
 
-        $data_request = [
+        /*$data_request = [
             'payment' => $payment->getPaymentData(),
             'cardInfo' => $cardInfo->getCardData(),
             'sellerInfo' => $sellerInfo->getSellerInfoData(),
             //'sellers' => $sellers->getSellersData()
+        ];*/
+
+        //$response = $client->payment()->create($data_request);
+
+        //fwrite(STDERR, print_r($response));
+
+        /*$detail = $client
+            ->payment()
+            ->details([
+                'id' => "020001409102281247420000012620420000000000"
+            ]);*/
+
+        /*$data_request = [
+            'id' => '010001410902281258440000012620480000000000',
+            'amount' => 1035,
+            //'sellers' => $sellers->getSellersData()
         ];
 
-        //fwrite(STDERR, print_r($client->getAccessToken()));
-        $response = $client->payment()->create($data_request);
+        $capture = $client
+            ->payment()
+            ->capture($data_request);*/
+        $item1 = new Items();
+        $item1->setId("P115DU90")
+            ->setAmount(345);
 
-        fwrite(STDERR, print_r($response));
+        $sellers1->setId("000A1")
+            ->setAmount(345)
+            ->setItems(
+                $item1->getItemsMarketplaceData()
+            );
+
+        $data_request = [
+            'id' => '010001410902281258440000012620480000000000',
+            "sellerId" => $sellers1->getId(),
+            "amount" => $sellers1->getAmount(),
+            "date" => date("Y-m-d"),
+            "item" => $sellers1->getItems()
+        ];
+        fwrite(STDERR, print_r(json_encode($data_request)));
+
+        $marketplace = $client
+            ->marketplace()
+            ->unlock($data_request);
+
+        fwrite(STDERR, print_r($marketplace));
 
         //$response = $client->ride()->details(["id" => 162,"institution_id" => 1, "token" => '$2y$10$u8aWfSLtr3HwFUwrZXSZh.c5cda.rntSyUwEAbW2OEvGTDUGoaIn6']);
         //fwrite(STDERR, print_r($client->getScope()));

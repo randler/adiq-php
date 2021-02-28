@@ -16,7 +16,7 @@ class Marketplace extends Endpoint
     public function unlock(array $payload)
     {
         return $this->client->request(
-            self::GET,
+            self::POST,
             Routes::marketplace()->unlock($payload['id']),
             ['json' => $payload],
             [

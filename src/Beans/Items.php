@@ -150,7 +150,6 @@ class Items
 		return $this;
 	}
 
-
     /**
      * Get the value of rateAmount
      *
@@ -164,6 +163,19 @@ class Items
             "amount" => $this->amount,
             "ratePercent" => $this->ratePercent,
             "rateAmount" => $this->rateAmount
+        ];
+    }
+
+    /**
+     * Get the value of rateAmount
+     *
+     * @return  array
+     */ 
+    public function getItemsMarketplaceData()
+    {
+        return [
+            "id" => $this->id,
+            "amount" => $this->amount
         ];
     }
 }
