@@ -47,7 +47,6 @@ class ResponseHandler
 
         $body = $response->getBody()->getContents();
         $status = $response->getStatusCode();
-        fwrite(STDERR, print_r($body));
 
         try {
             $jsonError = self::toJson($body);
