@@ -258,7 +258,7 @@ class ShipTo
      *
      * @return void
      */
-    public function getLineItemData()
+    public function getShipToData()
     {
         return [
             'FirstName' => $this->firstName,
