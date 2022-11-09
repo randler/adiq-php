@@ -14,7 +14,7 @@ class Routes
         $anonymous = new Anonymous();
 
         $anonymous->create = static function () {
-            return Client::VERSION_API . 'payments';
+            return Client::LATEST_VERSION_API . 'payments';
         };
 
         $anonymous->details = static function ($id) {
@@ -31,7 +31,7 @@ class Routes
 
         return $anonymous;
     }
-    
+
     /**
      * @return \Adiq\Anonymous
      */
@@ -49,7 +49,7 @@ class Routes
 
         return $anonymous;
     }
-    
+
     /**
      * @return \Adiq\Anonymous
      */
@@ -64,7 +64,7 @@ class Routes
         return $anonymous;
     }
 
-      /**
+    /**
      * @return \Adiq\Anonymous
      */
     public static function auth()
