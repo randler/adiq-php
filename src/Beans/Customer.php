@@ -5,7 +5,7 @@ namespace Adiq\Beans;
 class Customer
 {
     /**
-     * @var string | cpf, cnpj
+     * @var int | 1-cpf, 2-cnpj
      */
     private $documentType;
 
@@ -62,6 +62,11 @@ class Customer
     /**
      * @var string
      */
+    private $country;
+
+    /**
+     * @var string
+     */
     private $zipCode;
 
     /**
@@ -89,7 +94,7 @@ class Customer
      * @param string $value | cpf, cnpj
      * @return void
      */
-    public function setDocumentType(string $value)
+    public function setDocumentType(int $value)
     {
         $this->documentType = $value;
         return $this;
@@ -312,6 +317,28 @@ class Customer
     public function setState(string $value)
     {
         $this->state = $value;
+        return $this;
+    }
+
+    /**
+     * País do comprador - Obrigatório para 3DS/antifraude.
+     *
+     * @return void
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * País do comprador - Obrigatório para 3DS/antifraude.
+     *
+     * @param string $value
+     * @return void
+     */
+    public function setCountry(string $value)
+    {
+        $this->country = $value;
         return $this;
     }
 
