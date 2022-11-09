@@ -37,12 +37,12 @@ class Client
      * @var \Adiq\Endpoints\Payment
      */
     private $payment;
-    
+
     /**
      * @var \Adiq\Endpoints\Card
      */
     private $card;
-    
+
     /**
      * @var \Adiq\Endpoints\Card
      */
@@ -52,27 +52,27 @@ class Client
      * @var \Adiq\Endpoints\Auth
      */
     private $auth;
-    
+
     /**
      * @var string
      */
     private $accessToken;
-    
+
     /**
      * @var string
      */
     private $tokenType;
-    
+
     /**
      * @var string
      */
     private $expiresIn;
-    
+
     /**
      * @var string
      */
     private $scope;
-    
+
     /**
      * @var bool
      */
@@ -85,7 +85,7 @@ class Client
      */
     public function __construct(array $extras = null, bool $sandbox = false)
     {
-        if($sandbox) {
+        if ($sandbox) {
             $base_url = self::BASE_URI_SANDBOX;
         } else {
             $base_url = self::BASE_URI;
@@ -117,6 +117,23 @@ class Client
     }
 
     /**
+     * Updates the current access token to be used.
+     *
+     * @param string $accessToken
+     * @param string $tokenType
+     * @param int $expiresIn
+     * @param string $scope
+     * @return void
+     */
+    public function setAccessToken($accessToken, $tokenType, $expiresIn, $scope)
+    {
+        $this->accessToken = $accessToken;
+        $this->tokenType = $tokenType;
+        $this->expiresIn = $expiresIn;
+        $this->scope = $scope;
+    }
+
+    /**
      * @param string $method
      * @param string $uri
      * @param array $options
@@ -133,13 +150,13 @@ class Client
             $userAgent = isset($header['headers']['User-Agent']) ?
                 $header['headers']['User-Agent'] :
                 '';
-            if(isset($header) && !empty($header)) {
-                if($this->sandbox) {
+            if (isset($header) && !empty($header)) {
+                if ($this->sandbox) {
                     $base_url = self::BASE_URI_SANDBOX;
                 } else {
                     $base_url = self::BASE_URI;
                 }
-        
+
                 $options = array_merge($options, ['base_uri' => $base_url]);
 
                 $authorization = isset($header['Authorization']) ?
@@ -150,7 +167,7 @@ class Client
 
                 $this->http = new HttpClient($options);
             }
-            
+
             $response = $this->http->request(
                 $method,
                 $uri,
@@ -158,11 +175,9 @@ class Client
             );
 
             $body = ResponseHandler::success((string)$response->getBody());
-            if(isset($body->accessToken) && !empty($body->accessToken)) {
-                $this->accessToken = $body->accessToken;
-                $this->tokenType = $body->tokenType;
-                $this->expiresIn = $body->expiresIn;
-                $this->scope = $body->scope;
+
+            if (isset($body->accessToken) && !empty($body->accessToken)) {
+                $this->setAccessToken($body->accessToken, $body->tokenType, $body->expiresIn, $body->scope);
             }
 
             return $body;
@@ -232,7 +247,7 @@ class Client
     {
         return $this->marketplace;
     }
-    
+
     /**
      * @return \Adiq\Endpoints\Auth
      */
@@ -240,7 +255,7 @@ class Client
     {
         return $this->auth;
     }
-    
+
     /**
      * @return string
      */
@@ -248,7 +263,7 @@ class Client
     {
         return $this->accessToken;
     }
-    
+
     /**
      * @return string
      */
@@ -256,7 +271,7 @@ class Client
     {
         return $this->tokenType;
     }
-    
+
     /**
      * @return string
      */
@@ -264,7 +279,7 @@ class Client
     {
         return $this->expiresIn;
     }
-    
+
     /**
      * @return string
      */
