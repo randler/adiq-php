@@ -252,7 +252,6 @@ class ShipTo
         return $this;
     }
 
-
     /**
      * Converts to data array
      *

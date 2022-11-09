@@ -19,7 +19,7 @@ class Client
     /**
      * @var string
      */
-    const VERSION_API = "v1/";
+    const VERSION_API = "v2/";
     const BASE_URI          = 'https://ecommerce.adiq.io/';
     const BASE_URI_SANDBOX  = 'https://ecommerce-hml.adiq.io/';
 
