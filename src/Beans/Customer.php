@@ -405,6 +405,7 @@ class Customer
             'Complement' => $this->complement,
             'City' => $this->city,
             'State' => $this->state,
+            'Country' => $this->country,
             'ZipCode' => $this->zipCode,
             'IpAddress' => $this->ipAddress,
         ];
