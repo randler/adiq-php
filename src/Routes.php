@@ -29,6 +29,10 @@ class Routes
             return Client::VERSION_API . "payments/$id/capture";
         };
 
+        $anonymous->validate = static function () {
+            return Client::VERSION_API . "payments/";
+        };
+
         return $anonymous;
     }
 
