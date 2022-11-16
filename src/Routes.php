@@ -30,7 +30,7 @@ class Routes
         };
 
         $anonymous->validate = static function () {
-            return Client::VERSION_API . "payments/";
+            return Client::VERSION_API . "payments/validate";
         };
 
         return $anonymous;
