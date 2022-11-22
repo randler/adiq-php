@@ -17,8 +17,8 @@ class Routes
             return Client::LATEST_VERSION_API . 'payments';
         };
 
-        $anonymous->details = static function ($id) {
-            return Client::VERSION_API . "payments/$id";
+        $anonymous->details = static function ($id, $date) {
+            return Client::VERSION_API . "payments/$id" . ($date ? "/$date" : '');
         };
 
         $anonymous->cancel = static function ($id) {
