@@ -21,14 +21,14 @@ class Payment extends Endpoint
             ['json' => $payload],
             [
                 'Content-Type' => 'application/json',
-                'Authorization' => 
-                    $this->client->getTokenType() . 
-                    ' ' . 
+                'Authorization' =>
+                $this->client->getTokenType() .
+                    ' ' .
                     $this->client->getAccessToken()
             ]
         );
     }
-    
+
     /**
      * @param array $payload
      *
@@ -38,18 +38,18 @@ class Payment extends Endpoint
     {
         return $this->client->request(
             self::GET,
-            Routes::payment()->details($payload['id']),
+            Routes::payment()->details($payload['id'], $payload['date'] ?? null),
             ['json' => $payload],
             [
                 'Content-Type' => "application/json",
-                'Authorization' => 
-                    $this->client->getTokenType() . 
-                    ' ' . 
+                'Authorization' =>
+                $this->client->getTokenType() .
+                    ' ' .
                     $this->client->getAccessToken()
             ]
         );
     }
-    
+
     /**
      * @param array $payload
      *
@@ -63,9 +63,9 @@ class Payment extends Endpoint
             ['json' => $payload],
             [
                 'Content-Type' => "application/json",
-                'Authorization' => 
-                    $this->client->getTokenType() . 
-                    ' ' . 
+                'Authorization' =>
+                $this->client->getTokenType() .
+                    ' ' .
                     $this->client->getAccessToken()
             ]
         );
@@ -84,9 +84,9 @@ class Payment extends Endpoint
             ['json' => $payload],
             [
                 'Content-Type' => "application/json",
-                'Authorization' => 
-                    $this->client->getTokenType() . 
-                    ' ' . 
+                'Authorization' =>
+                $this->client->getTokenType() .
+                    ' ' .
                     $this->client->getAccessToken()
             ]
         );
@@ -113,4 +113,3 @@ class Payment extends Endpoint
         );
     }
 }
-
