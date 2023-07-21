@@ -14,7 +14,7 @@ class Routes
         $anonymous = new Anonymous();
 
         $anonymous->create = static function () {
-            return Client::LATEST_VERSION_API . 'payments';
+            return Client::VERSION_API . 'payments';
         };
 
         $anonymous->details = static function ($id, $date) {
