@@ -17,8 +17,8 @@ class Routes
             return Client::VERSION_API . 'payments';
         };
 
-        $anonymous->details = static function ($id) {
-            return Client::VERSION_API . "payments/$id";
+        $anonymous->details = static function ($id, $date) {
+            return Client::VERSION_API . "payments/$id" . ($date ? "/$date" : '');
         };
 
         $anonymous->cancel = static function ($id) {
@@ -29,9 +29,13 @@ class Routes
             return Client::VERSION_API . "payments/$id/capture";
         };
 
+        $anonymous->validate = static function () {
+            return Client::VERSION_API . "payments/validate";
+        };
+
         return $anonymous;
     }
-    
+
     /**
      * @return \Adiq\Anonymous
      */
@@ -49,7 +53,7 @@ class Routes
 
         return $anonymous;
     }
-    
+
     /**
      * @return \Adiq\Anonymous
      */
@@ -64,7 +68,7 @@ class Routes
         return $anonymous;
     }
 
-      /**
+    /**
      * @return \Adiq\Anonymous
      */
     public static function auth()
